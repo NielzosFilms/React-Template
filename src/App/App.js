@@ -11,7 +11,9 @@ import { AuthenticationProvider, useAuth } from "../providers";
 import { Login } from "../components/authentication/Login";
 import { ChangePassword } from "../components/authentication/ChangePassword";
 
-function App() {
+import { CrudTable } from "../components/model";
+
+export function App() {
 	const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 	const theme = React.useMemo(
 		() =>
@@ -51,6 +53,17 @@ function App() {
 					<Route exact path="/change-password">
 						<ChangePassword />
 					</Route>
+					<Route exact path="/users">
+						<CrudTable
+							data={[
+								{ id: 1, name: "Niels", age: 18 },
+								{ id: 2, name: "Esmee", age: 25 },
+								{ id: 3, name: "Roelof", age: 51 },
+								{ id: 4, name: "Metta", age: 51 },
+							]}
+							columns={["name", "age"]}
+						/>
+					</Route>
 				</Switch>
 			</>
 		);
@@ -86,5 +99,3 @@ function App() {
 		</ThemeWrapper>
 	);
 }
-
-export default App;
