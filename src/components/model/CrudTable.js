@@ -5,12 +5,11 @@ import {
 	TableHead,
 	TableBody,
 	TableCell,
-	IconButton,
 } from "@material-ui/core";
 
-import { Launch, Delete, Edit } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory, useRouteMatch } from "react-router";
+import { ActionsMenu } from ".";
 
 const useStyles = makeStyles((theme) => ({
 	row: {
@@ -26,7 +25,13 @@ function UCFirst(str) {
 	return str.slice(0, 1).toUpperCase() + str.slice(1);
 }
 
-export function CrudTable({ data, columns }) {
+export function CrudTable({
+	data,
+	columns,
+	showActions = true,
+	showActionsHeader = false,
+	deleteRecord = () => null,
+}) {
 	const classes = useStyles();
 	const history = useHistory();
 	const { path } = useRouteMatch();
@@ -37,67 +42,46 @@ export function CrudTable({ data, columns }) {
 				<TableHead>
 					<TableRow>
 						{columns.map((column) => (
-							<TableCell>{UCFirst(column)}</TableCell>
+							<TableCell>
+								<b>{UCFirst(column)}</b>
+							</TableCell>
 						))}
-						<TableCell align="right">Actions</TableCell>
+						{showActions && (
+							<TableCell align="right">
+								{showActionsHeader && <b>Actions</b>}
+							</TableCell>
+						)}
 					</TableRow>
 				</TableHead>
 				<TableBody>
 					{data.map((entity) => {
 						return (
-							<TableRow
-								hover
-								className={classes.row}
-								onClick={(event) => {
-									event.stopPropagation();
-									history.push(`${path}/show/${entity.id}`);
-								}}
-							>
+							<TableRow hover className={classes.row}>
 								{Object.keys(entity).map((property) => {
 									if (columns.includes(property)) {
 										return (
-											<TableCell>
+											<TableCell
+												onClick={() => {
+													history.push(
+														`${path}/show/${entity.id}`
+													);
+												}}
+											>
 												{entity[property]}
 											</TableCell>
 										);
 									}
 									return <></>;
 								})}
-								<TableCell align="right">
-									<IconButton
-										size="small"
-										color="secondary"
-										onClick={(event) => {
-											event.stopPropagation();
-											history.push(
-												`${path}/show/${entity.id}`
-											);
-										}}
-									>
-										<Launch />
-									</IconButton>
-									<IconButton
-										size="small"
-										color="secondary"
-										onClick={(event) => {
-											event.stopPropagation();
-											history.push(
-												`${path}/edit/${entity.id}`
-											);
-										}}
-									>
-										<Edit />
-									</IconButton>
-									<IconButton
-										size="small"
-										color="secondary"
-										onClick={(event) => {
-											event.stopPropagation();
-										}}
-									>
-										<Delete />
-									</IconButton>
-								</TableCell>
+								{showActions && (
+									<TableCell align="right">
+										<ActionsMenu
+											id={entity.id}
+											size="small"
+											deleteRecord={deleteRecord}
+										/>
+									</TableCell>
+								)}
 							</TableRow>
 						);
 					})}
