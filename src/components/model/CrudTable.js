@@ -57,8 +57,8 @@ export function CrudTable({
 					{data.map((entity) => {
 						return (
 							<TableRow hover className={classes.row}>
-								{Object.keys(entity).map((property) => {
-									if (columns.includes(property)) {
+								{columns.map((column) => {
+									if (Object.keys(entity).includes(column)) {
 										return (
 											<TableCell
 												onClick={() => {
@@ -67,7 +67,7 @@ export function CrudTable({
 													);
 												}}
 											>
-												{entity[property]}
+												{entity[column]}
 											</TableCell>
 										);
 									}
