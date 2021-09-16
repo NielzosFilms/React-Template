@@ -47,7 +47,7 @@ export function ActionsMenuContent({ id, deleteRecord = () => null }) {
 			<MenuItem
 				onClick={(event) => {
 					event.stopPropagation();
-					deleteRecord();
+					deleteRecord(id);
 				}}
 			>
 				<DeleteIcon /> Delete

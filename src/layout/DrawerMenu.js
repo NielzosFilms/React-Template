@@ -8,7 +8,13 @@ import {
 	ListItemIcon,
 	ListItemText,
 } from "@material-ui/core";
-import { ChevronLeft, Person, ExitToApp, Home } from "@material-ui/icons";
+import {
+	ChevronLeft,
+	Person,
+	ExitToApp,
+	Home,
+	Explore,
+} from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { useAuth } from "../providers";
 import { useHistory } from "react-router-dom";
@@ -53,6 +59,15 @@ export function DrawerMenu({ open, setOpen }) {
 						<Home />
 					</ListItemIcon>
 					<ListItemText>Home</ListItemText>
+				</ListItem>
+				<ListItem
+					button
+					onClick={() => history.push("/crud-table-lab")}
+				>
+					<ListItemIcon>
+						<Explore />
+					</ListItemIcon>
+					<ListItemText>Crud Table Lab</ListItemText>
 				</ListItem>
 			</List>
 			<Divider />

@@ -41,8 +41,8 @@ export function CrudTable({
 			<Table>
 				<TableHead>
 					<TableRow>
-						{columns.map((column) => (
-							<TableCell>
+						{columns.map((column, idx) => (
+							<TableCell key={idx}>
 								<b>{UCFirst(column)}</b>
 							</TableCell>
 						))}
@@ -56,11 +56,16 @@ export function CrudTable({
 				<TableBody>
 					{data.map((entity) => {
 						return (
-							<TableRow hover className={classes.row}>
-								{columns.map((column) => {
+							<TableRow
+								key={entity.id}
+								hover
+								className={classes.row}
+							>
+								{columns.map((column, idx) => {
 									if (Object.keys(entity).includes(column)) {
 										return (
 											<TableCell
+												key={`${entity.id}_${idx}`}
 												onClick={() => {
 													history.push(
 														`${path}/show/${entity.id}`

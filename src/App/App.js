@@ -53,7 +53,7 @@ export function App() {
 					<Route exact path="/change-password">
 						<ChangePassword />
 					</Route>
-					<Route exact path="/users">
+					<Route exact path="/crud-table-lab">
 						<CrudTable
 							data={[
 								{ id: 1, name: "Niels", age: 18 },
@@ -61,7 +61,10 @@ export function App() {
 								{ id: 3, name: "Roelof", age: 51 },
 								{ id: 4, name: "Metta", age: 51 },
 							]}
-							columns={["name", "age"]}
+							columns={["id", "name", "age"]}
+							deleteRecord={(id) =>
+								window.alert("Delete record " + id)
+							}
 						/>
 					</Route>
 				</Switch>
