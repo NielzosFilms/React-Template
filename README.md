@@ -1,4 +1,4 @@
-# Setup
+# React Template
 
 This is a template used to setup a React App.
 
@@ -16,7 +16,7 @@ This is a template used to setup a React App.
 -   Crud table
 -   Query provider
 
-## Start guide
+# Start guide
 
 Install `node_modules`:
 
