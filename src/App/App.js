@@ -19,17 +19,17 @@ export function App() {
 		() =>
 			createTheme({
 				palette: {
-					primary: {
-						light: "#F59C9C",
-						main: "#A45D5D",
-						dark: "#613A3A",
-						contrastText: "#FFD9A4",
-					},
-					secondary: {
-						light: "#FFD9A4",
-						main: "#FFC069",
-						dark: "#946C34",
-					},
+					// primary: {
+					// 	light: "#F59C9C",
+					// 	main: "#A45D5D",
+					// 	dark: "#613A3A",
+					// 	contrastText: "#FFD9A4",
+					// },
+					// secondary: {
+					// 	light: "#FFD9A4",
+					// 	main: "#FFC069",
+					// 	dark: "#946C34",
+					// },
 					type: prefersDarkMode ? "dark" : "light",
 				},
 				typography: {

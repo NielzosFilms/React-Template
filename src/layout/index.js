@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { TopBar } from "./TopBar";
 import { useAuth } from "../providers";
 import { useHistory } from "react-router-dom";
+import { DrawerMenu } from "./DrawerMenu";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -22,6 +23,7 @@ export function Layout({ children }) {
 	return (
 		<>
 			<TopBar sideBarOpen={open} setSideBarOpen={setOpen} />
+			<DrawerMenu open={open} setOpen={setOpen} />
 			<main className={classes.root}>
 				<Container>{children}</Container>
 			</main>
