@@ -12,6 +12,9 @@ import { Login } from "../components/authentication/Login";
 import { ChangePassword } from "../components/authentication/ChangePassword";
 
 import { CrudTable } from "../components/model";
+import Typography from "@material-ui/core/Typography";
+
+import faker from "faker";
 
 export function App() {
 	const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -54,13 +57,15 @@ export function App() {
 						<ChangePassword />
 					</Route>
 					<Route exact path="/crud-table-lab">
+						<Typography variant="h3" color="secondary">
+							Dummy Data
+						</Typography>
 						<CrudTable
-							data={[
-								{ id: 1, name: "Niels", age: 18 },
-								{ id: 2, name: "Esmee", age: 25 },
-								{ id: 3, name: "Roelof", age: 51 },
-								{ id: 4, name: "Metta", age: 51 },
-							]}
+							data={[...Array(20).keys()].map((id) => ({
+								id: id + 1,
+								name: faker.name.firstName(),
+								age: faker.datatype.number(90),
+							}))}
 							columns={["id", "name", "age"]}
 							deleteRecord={(id) =>
 								window.alert("Delete record " + id)
