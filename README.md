@@ -1,5 +1,7 @@
 # Setup
 
+This is a template used to setup a React App.
+
 ## Used libraries
 
 -   Node JS
@@ -7,6 +9,12 @@
 -   Sequelize
 -   Material-UI
 -   Graphql
+
+## Features
+
+-   Authentication
+-   Crud table
+-   Query provider
 
 ## Start guide
 
