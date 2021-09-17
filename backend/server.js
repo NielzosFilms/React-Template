@@ -6,7 +6,11 @@ const fs = require("fs");
 dotenv.config();
 
 const { ApolloServer, AuthenticationError } = require("apollo-server-express");
-const typeDefs = require(path.join(__dirname, "schema"));
+if (!fs.existsSync(path.join(__dirname, "generatedSchema.js")))
+	throw Error(
+		"You need to generate the GraphQL schema first, run `yarn schema:generate` to do so."
+	);
+const typeDefs = require(path.join(__dirname, "generatedSchema"));
 const resolvers = require(path.join(__dirname, "resolvers"));
 
 const sequelize = require(path.join(__dirname, "../models/index"));
