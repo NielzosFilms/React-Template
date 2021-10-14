@@ -35,6 +35,7 @@ async function startBackend() {
 						id: 1,
 						name: "admin",
 					},
+					admin: true,
 					token: null,
 				};
 			}
@@ -56,6 +57,7 @@ async function startBackend() {
 						models: sequelize,
 						loggedIn: true,
 						user,
+						admin: user.admin,
 						token,
 					};
 				}
@@ -64,6 +66,7 @@ async function startBackend() {
 				models: sequelize,
 				loggedIn: false,
 				user: null,
+				admin: false,
 				token: null,
 			};
 		},

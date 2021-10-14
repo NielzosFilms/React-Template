@@ -17,7 +17,7 @@ function generateModelQueries() {
 				modelName
 			)}FindOne: async (root, { id }, { loggedIn, models, admin, user }) => {
 				if (!loggedIn) return null;
-				if(user.id !== record.id) {
+				if(user.id !== id) {
 					if(!admin) return null;
 				}
 				return await models.${modelName}.findOne({
@@ -29,11 +29,8 @@ function generateModelQueries() {
 			`;
 			code += `${LCFirst(
 				modelName
-			)}FindAll: async (root, args, { loggedIn, models, admin, user }) => {
-				if (!loggedIn) return null;
-				if(user.id !== record.id) {
-					if(!admin) return null;
-				}
+			)}FindAll: async (root, args, { loggedIn, models, admin }) => {
+				if (!loggedIn || !admin) return null;
 				return await models.${modelName}.findAll();
 			},
 			`;
