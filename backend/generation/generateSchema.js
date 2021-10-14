@@ -25,7 +25,11 @@ function generateModelTypes() {
 						attribute.Model.associations[assoModel].options
 							.foreignKey === propName
 				);
-				graphqlProp += `${assoModel.toLowerCase()}: ${assoModel.toString()}`;
+				if (assoModel) {
+					graphqlProp += `${assoModel.toLowerCase()}: ${assoModel.toString()}`;
+				} else {
+					graphqlProp += "ASSOCIATION-HERE";
+				}
 			} else {
 				graphqlProp += `${propName}: ${convertDataTypeToGraphql(
 					attribute.type
@@ -65,7 +69,11 @@ function generateModelInputTypes() {
 						attribute.Model.associations[assoModel].options
 							.foreignKey === propName
 				);
-				graphqlProp += `${assoModel.toLowerCase()}: ${assoModel.toString()}Input`;
+				if (assoModel) {
+					graphqlProp += `${assoModel.toLowerCase()}: ${assoModel.toString()}Input`;
+				} else {
+					graphqlProp += "ASSOCIATION-HERE";
+				}
 			} else {
 				graphqlProp += `${propName}: ${convertDataTypeToGraphql(
 					attribute.type
