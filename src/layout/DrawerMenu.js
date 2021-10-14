@@ -60,34 +60,19 @@ export function DrawerMenu({ open, setOpen }) {
 					</ListItemIcon>
 					<ListItemText>Home</ListItemText>
 				</ListItem>
-				<ListItem
-					button
-					onClick={() => history.push("/crud-table-lab")}
-				>
-					<ListItemIcon>
-						<Explore />
-					</ListItemIcon>
-					<ListItemText>Crud Table Lab</ListItemText>
-				</ListItem>
+				{authCtx.user && (
+					<ListItem
+						button
+						onClick={() => history.push("/crud-table-lab")}
+					>
+						<ListItemIcon>
+							<Explore />
+						</ListItemIcon>
+						<ListItemText>Crud Table Lab</ListItemText>
+					</ListItem>
+				)}
 			</List>
 			<Divider />
-			<List>
-				<ListItem
-					button
-					onClick={() => history.push("/change-password")}
-				>
-					<ListItemIcon>
-						<Person />
-					</ListItemIcon>
-					<ListItemText>Change password</ListItemText>
-				</ListItem>
-				<ListItem button onClick={() => authCtx.logout()}>
-					<ListItemIcon>
-						<ExitToApp />
-					</ListItemIcon>
-					<ListItemText>Logout</ListItemText>
-				</ListItem>
-			</List>
 		</Drawer>
 	);
 }

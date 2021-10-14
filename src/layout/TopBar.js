@@ -6,7 +6,10 @@ import {
 	Button,
 } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { Menu as MenuIcon } from "@material-ui/icons";
+import {
+	Menu as MenuIcon,
+	AccountCircle as AccountIcon,
+} from "@material-ui/icons";
 import { useAuth } from "../providers";
 
 const useStyles = makeStyles((theme) => ({
@@ -21,32 +24,34 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export function TopBar({ sideBarOpen, setSideBarOpen }) {
+export function TopBar({ sideBarOpen, setSideBarOpen, userOpen, setUserOpen }) {
 	const classes = useStyles();
 	const authCtx = useAuth();
 
 	return (
 		<AppBar position="static">
 			<Toolbar>
-				{authCtx.user && (
-					<IconButton
-						className={classes.menuButton}
-						edge="start"
-						color="inherit"
-						aria-label="menu"
-						onClick={() => setSideBarOpen(!sideBarOpen)}
-					>
-						<MenuIcon />
-					</IconButton>
-				)}
+				<IconButton
+					className={classes.menuButton}
+					edge="start"
+					color="inherit"
+					aria-label="menu"
+					onClick={() => setSideBarOpen(!sideBarOpen)}
+				>
+					<MenuIcon />
+				</IconButton>
 				<Typography className={classes.title} variant="h6">
 					{process.env.REACT_APP_NAME}
 				</Typography>
-				{authCtx.user && (
-					<Button color="inherit" onClick={() => authCtx.logout()}>
-						Logout
-					</Button>
-				)}
+				<IconButton
+					className={classes.menuButton}
+					edge="start"
+					color="inherit"
+					aria-label="account-menu"
+					onClick={() => setUserOpen(!userOpen)}
+				>
+					<AccountIcon />
+				</IconButton>
 			</Toolbar>
 		</AppBar>
 	);
