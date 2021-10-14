@@ -8,7 +8,7 @@ import { SnackbarProvider } from "notistack";
 
 import { AuthenticationProvider, useAuth } from "../providers";
 
-import { Login } from "../components/authentication/Login";
+import { Login, Register } from "../components/authentication";
 import { ChangePassword } from "../components/authentication/ChangePassword";
 
 import { CrudTable } from "../components/model";
@@ -53,6 +53,9 @@ export function App() {
 		return (
 			<>
 				<Switch>
+					<Route exact path="/">
+						<>Home - Authenticated</>
+					</Route>
 					<Route exact path="/change-password">
 						<ChangePassword />
 					</Route>
@@ -80,7 +83,17 @@ export function App() {
 	const GuestPage = () => {
 		return (
 			<>
-				<Login />
+				<Switch>
+					<Route exact path="/login">
+						<Login />
+					</Route>
+					<Route exact path="/register">
+						<Register />
+					</Route>
+					<Route exact path="/">
+						<>Home - Guest</>
+					</Route>
+				</Switch>
 			</>
 		);
 	};

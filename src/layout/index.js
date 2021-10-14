@@ -24,9 +24,7 @@ export function Layout({ children }) {
 		<>
 			<TopBar sideBarOpen={open} setSideBarOpen={setOpen} />
 			<DrawerMenu open={open} setOpen={setOpen} />
-			<main className={classes.root}>
-				<Container>{children}</Container>
-			</main>
+			<main className={classes.root}>{children}</main>
 		</>
 	);
 }

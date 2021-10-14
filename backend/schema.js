@@ -24,6 +24,7 @@ const typeDefs = gql(`
     type Mutation {
         login(username: String!, password: String!): LoginPayload
         logout: Boolean
+        register(username: String!, password: String!): LoginPayload
         changePassword(password: String!): Boolean
     }
 `);

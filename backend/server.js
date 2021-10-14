@@ -8,7 +8,7 @@ dotenv.config();
 const { ApolloServer, AuthenticationError } = require("apollo-server-express");
 if (!fs.existsSync(path.join(__dirname, "generatedSchema.js")))
 	throw Error(
-		"You need to generate the GraphQL schema first, run `yarn schema:generate` to do so."
+		"You need to generate the GraphQL schema first, run `yarn generate:schema` to do so."
 	);
 const typeDefs = require(path.join(__dirname, "generatedSchema"));
 const resolvers = require(path.join(__dirname, "resolvers"));

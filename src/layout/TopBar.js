@@ -40,7 +40,7 @@ export function TopBar({ sideBarOpen, setSideBarOpen }) {
 					</IconButton>
 				)}
 				<Typography className={classes.title} variant="h6">
-					Template - NielzosFilms
+					{process.env.REACT_APP_NAME}
 				</Typography>
 				{authCtx.user && (
 					<Button color="inherit" onClick={() => authCtx.logout()}>

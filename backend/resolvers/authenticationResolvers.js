@@ -10,6 +10,14 @@ const resolvers = {
 			if (!loggedIn) return null;
 			return user;
 		},
+		userFindOne: async (root, { id }, { loggedIn, models }) => {
+			if (!loggedIn) return null;
+			return await models.User.findOne({
+				where: {
+					id,
+				},
+			});
+		},
 	},
 	Mutation: {
 		login: async (root, { username, password }, { models, loggedIn }) => {
@@ -41,6 +49,28 @@ const resolvers = {
 				},
 			});
 			return true;
+		},
+		register: async (
+			root,
+			{ username, password },
+			{ models, loggedIn }
+		) => {
+			if (loggedIn) return { success: false, token: null };
+			const user = await models.User.create({
+				name: username,
+				password,
+			});
+
+			if (user) {
+				const token = crypto.randomBytes(64).toString("hex");
+				const session = await models.Session.create({
+					token,
+					user_id: Number(user.id),
+				});
+				session.save();
+				return { success: true, token };
+			}
+			return { success: false, token: null };
 		},
 		changePassword: async (
 			root,

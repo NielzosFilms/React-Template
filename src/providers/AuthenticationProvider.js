@@ -38,6 +38,15 @@ const MUT_CHANGE_PASS = gql`
 	}
 `;
 
+const MUT_REGISTER = gql`
+	mutation Register($name: String!, $password: String!) {
+		register(username: $name, password: $password) {
+			success
+			token
+		}
+	}
+`;
+
 export function AuthenticationProvider({ children }) {
 	const queryUserResult = useQuery(QUERY_USER);
 
@@ -46,6 +55,7 @@ export function AuthenticationProvider({ children }) {
 	const [loginMut, loginRes] = useMutation(MUT_LOGIN);
 	const [logout, logoutRes] = useMutation(MUT_LOGOUT);
 	const [changePassowrdMut, changePasswordRes] = useMutation(MUT_CHANGE_PASS);
+	const [registerMut, registerMutRes] = useMutation(MUT_REGISTER);
 
 	const history = useHistory();
 
@@ -75,6 +85,21 @@ export function AuthenticationProvider({ children }) {
 		queryUserResult.refetch();
 	}, [loginRes.data, logoutRes.data]);
 
+	React.useEffect(() => {
+		if (registerMutRes?.data?.login?.success === true) {
+			localStorage.setItem("token", registerMutRes.data.login.token);
+			// enqueueSnackbar("Logged in!", {
+			// 	variant: "success",
+			// });
+			history.push("/");
+		} else if (registerMutRes?.data?.login?.success === false) {
+			enqueueSnackbar("An error occurred", {
+				variant: "error",
+			});
+		}
+		queryUserResult.refetch();
+	}, [registerMutRes.data, logoutRes.data]);
+
 	/**
 	 * @param {string} name
 	 * @param {string} password
@@ -98,8 +123,19 @@ export function AuthenticationProvider({ children }) {
 		history.push("/");
 	};
 
+	const register = (name, password) => {
+		registerMut({
+			variables: {
+				name,
+				password,
+			},
+		});
+	};
+
 	return (
-		<AuthCtx.Provider value={{ user, login, logout, changePassword }}>
+		<AuthCtx.Provider
+			value={{ user, login, logout, register, changePassword }}
+		>
 			{children}
 		</AuthCtx.Provider>
 	);

@@ -8,11 +8,12 @@ export function QueryProvider({
 	variables,
 	returnName = null,
 	children,
+	fetchPolicy = "cache-first",
 	...props
 }) {
 	const queryResult = useQuery(query, {
 		variables,
-		fetchPolicy: props.fetchPolicy || "cache-first",
+		fetchPolicy: fetchPolicy,
 	});
 	const { enqueueSnackbar } = useSnackbar();
 
