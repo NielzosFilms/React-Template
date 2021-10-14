@@ -2,7 +2,7 @@
 const { Model } = require("sequelize");
 const passwordHash = require("password-hash");
 module.exports = (sequelize, DataTypes) => {
-	class User extends Model {
+	class Store extends Model {
 		/**
 		 * Helper method for defining associations.
 		 * This method is not a part of Sequelize lifecycle.
@@ -10,45 +10,48 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			// define association here
-			this.hasMany(models.Session, {
-				foreignKey: "user_id",
+			this.belongsTo(models.Country, {
+				foreignKey: "country_id",
 			});
 
 			this.hasMany(models.Order, {
-				foreignKey: "user_id",
+				foreignKey: "store_id",
 			});
 
 			this.belongsToMany(models.Product, {
-				through: "ShoppingCarts",
-				foreignKey: "user_id",
+				through: "Stocks",
+				foreignKey: "store_id",
 			});
 		}
 	}
-	User.init(
+	Store.init(
 		{
 			name: {
 				type: DataTypes.STRING,
 				allowNull: false,
-				unique: true,
 			},
-			password: {
+			street: {
 				type: DataTypes.STRING,
 				allowNull: false,
-				private: true,
-				set(value) {
-					this.setDataValue("password", passwordHash.generate(value));
-				},
 			},
-			admin: {
-				type: DataTypes.BOOLEAN,
+			housenumber: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+			},
+			postalCode: {
+				type: DataTypes.STRING,
+				allowNull: false,
+			},
+			country_id: {
+				type: DataTypes.STRING,
 				allowNull: false,
 			},
 		},
 		{
 			sequelize,
 			paranoid: true,
-			modelName: "User",
+			modelName: "Store",
 		}
 	);
-	return User;
+	return Store;
 };
