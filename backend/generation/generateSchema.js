@@ -1,5 +1,6 @@
 const path = require("path");
 const dotenv = require("dotenv");
+const pluralize = require("pluralize");
 dotenv.config();
 
 const sequelize = require(path.join(__dirname, "../../models/index"));
@@ -8,6 +9,10 @@ const { convertDataTypeToGraphql, LCFirst } = require("./utils");
 const fs = require("fs");
 
 function generateModelTypes() {
+	console.log("🚧 Generating Model Types...");
+	console.log(
+		"🔴 Only fields work for now, other associations are not implemented yet!"
+	);
 	let graphql = "";
 	Object.keys(models).forEach((modelName) => {
 		let graphqlType = `type ${modelName} {\n`;
@@ -28,7 +33,14 @@ function generateModelTypes() {
 				if (assoModel) {
 					graphqlProp += `${assoModel.toLowerCase()}: ${assoModel.toString()}`;
 				} else {
-					graphqlProp += "ASSOCIATION-HERE";
+					const referenceModel = attribute.references.model;
+					if (pluralize.isPlural(referenceModel)) {
+						graphqlProp += `${referenceModel.toLowerCase()}: [${pluralize.singular(
+							referenceModel
+						)}]`;
+					} else {
+						graphqlProp += `${referenceModel.toLowerCase()}: ${referenceModel}`;
+					}
 				}
 			} else {
 				graphqlProp += `${propName}: ${convertDataTypeToGraphql(
@@ -45,6 +57,10 @@ function generateModelTypes() {
 }
 
 function generateModelInputTypes() {
+	console.log("🚧 Generating Input Types...");
+	console.log(
+		"🔴 Only fields work for now, other associations are not implemented yet!"
+	);
 	let graphql = "";
 	Object.keys(models).forEach((modelName) => {
 		let graphqlInput = `input ${modelName}Input {\n`;
@@ -72,7 +88,14 @@ function generateModelInputTypes() {
 				if (assoModel) {
 					graphqlProp += `${assoModel.toLowerCase()}: ${assoModel.toString()}Input`;
 				} else {
-					graphqlProp += "ASSOCIATION-HERE";
+					const referenceModel = attribute.references.model;
+					if (pluralize.isPlural(referenceModel)) {
+						graphqlProp += `${referenceModel.toLowerCase()}: [${pluralize.singular(
+							referenceModel
+						)}]`;
+					} else {
+						graphqlProp += `${referenceModel.toLowerCase()}: ${referenceModel}`;
+					}
 				}
 			} else {
 				graphqlProp += `${propName}: ${convertDataTypeToGraphql(
@@ -89,6 +112,7 @@ function generateModelInputTypes() {
 }
 
 function generateModelQueries() {
+	console.log("🚧 Generating Model Queries...");
 	let graphql = "";
 	Object.keys(models).forEach((modelName) => {
 		graphql += `    ${LCFirst(modelName)}FindOne(id: Int): ${modelName}\n`;
@@ -98,6 +122,7 @@ function generateModelQueries() {
 }
 
 function generateModelMutations() {
+	console.log("🚧 Generating Model Mutations...");
 	let graphql = "";
 	Object.keys(models).forEach((modelName) => {
 		graphql += `    ${LCFirst(
@@ -149,6 +174,6 @@ module.exports = typeDefs;
 `,
 	function (err) {
 		if (err) return console.log(err);
-		console.log("Schema generated!");
+		console.log("✅ Schema generated!");
 	}
 );

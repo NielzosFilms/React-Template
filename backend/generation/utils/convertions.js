@@ -4,6 +4,9 @@ const graphQLConversions = {
 	VARCHAR: "String",
 	DATETIME: "Date",
 	TINYINT: "Boolean",
+	BIGINT: "Int",
+	TEXT: "String",
+	FLOAT: "Float",
 };
 
 /**
@@ -12,11 +15,20 @@ const graphQLConversions = {
  * @returns
  */
 function convertDataTypeToGraphql(dataType) {
-	return graphQLConversions[
-		Object.keys(graphQLConversions).find((key) =>
-			dataType.toString().includes(key)
-		)
-	];
+	const foundConvertion =
+		graphQLConversions[
+			Object.keys(graphQLConversions).find((key) =>
+				dataType.toString().includes(key)
+			)
+		];
+
+	if (foundConvertion) {
+		return foundConvertion;
+	} else {
+		throw Error(
+			`The given dataType was not found in the convertions '${dataType}'`
+		);
+	}
 }
 
 module.exports = {
