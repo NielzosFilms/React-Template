@@ -12,6 +12,7 @@ function generateModelQueries() {
 	console.log("🚧 Generating model query resolvers...");
 	let code = "";
 	Object.keys(models).forEach((modelName) => {
+		if (modelName === "Session") return;
 		if (modelName === "User") {
 			code += `${LCFirst(
 				modelName
@@ -62,6 +63,7 @@ function generateModelMutations() {
 	console.log("🚧 Generating model mutation resolvers...");
 	let code = "";
 	Object.keys(models).forEach((modelName) => {
+		if (modelName === "Session") return;
 		if (modelName === "User") {
 			code += `
 			${LCFirst(modelName)}Create: async (root, { record }, { loggedIn, models }) => {
@@ -142,11 +144,13 @@ function generateModelAssociationQueries() {
 	console.log("🚧 Generating model query association resolvers...");
 	let code = "";
 	Object.keys(models).forEach((modelName) => {
+		if (modelName === "Session") return;
 		const assoc = models[modelName].associations;
 		if (Object.keys(assoc).length > 0) {
 			code += `${pluralize.singular(modelName)}: {`;
 
 			Object.keys(assoc).forEach((assocName) => {
+				if (pluralize.singular(assocName) === "Session") return;
 				if (pluralize.isPlural(assocName)) {
 					code += `
 					${LCFirst(assocName)}: async (root, args, extra) => {

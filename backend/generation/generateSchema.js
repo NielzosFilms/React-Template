@@ -12,6 +12,7 @@ function generateModelTypes() {
 	console.log("🚧 Generating model types...");
 	let graphql = "";
 	Object.keys(models).forEach((modelName) => {
+		if (modelName === "Session") return;
 		let graphqlType = `type ${modelName} {\n`;
 		const model = models[modelName];
 		Object.keys(model.rawAttributes).forEach((propName) => {
@@ -51,6 +52,7 @@ function generateModelTypes() {
 			if (graphqlProp !== "    ") graphqlType += `${graphqlProp}\n`;
 		});
 		Object.keys(model.associations).forEach((key) => {
+			if (pluralize.singular(key) === "Session") return;
 			let graphqlProp = `    `;
 			if (pluralize.isPlural(key)) {
 				graphqlProp += `${LCFirst(key)}: [${pluralize.singular(key)}]`;
@@ -71,6 +73,7 @@ function generateModelInputTypes() {
 	console.log("🚧 Generating input yypes...");
 	let graphql = "";
 	Object.keys(models).forEach((modelName) => {
+		if (modelName === "Session") return;
 		let graphqlInput = `input ${modelName}Input {\n`;
 		const model = models[modelName];
 		Object.keys(model.rawAttributes).forEach((propName) => {
@@ -117,6 +120,7 @@ function generateModelInputTypes() {
 			if (graphqlProp !== "    ") graphqlInput += `${graphqlProp}\n`;
 		});
 		Object.keys(model.associations).forEach((key) => {
+			if (pluralize.singular(key) === "Session") return;
 			let graphqlProp = `    `;
 			if (pluralize.isPlural(key)) {
 				graphqlProp += `${LCFirst(key)}: [${pluralize.singular(
@@ -139,6 +143,7 @@ function generateModelQueries() {
 	console.log("🚧 Generating model queries...");
 	let graphql = "";
 	Object.keys(models).forEach((modelName) => {
+		if (modelName === "Session") return;
 		graphql += `    ${LCFirst(modelName)}FindOne(id: Int): ${modelName}\n`;
 		graphql += `    ${LCFirst(modelName)}FindAll: [${modelName}]\n`;
 	});
@@ -149,6 +154,7 @@ function generateModelMutations() {
 	console.log("🚧 Generating model mutations...");
 	let graphql = "";
 	Object.keys(models).forEach((modelName) => {
+		if (modelName === "Session") return;
 		graphql += `    ${LCFirst(
 			modelName
 		)}Create(record: ${modelName}Input!): ${modelName}\n`;
