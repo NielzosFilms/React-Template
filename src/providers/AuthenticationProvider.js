@@ -39,8 +39,8 @@ const MUT_CHANGE_PASS = gql`
 `;
 
 const MUT_REGISTER = gql`
-	mutation Register($name: String!, $password: String!) {
-		register(username: $name, password: $password) {
+	mutation Register($name: String!, $password: String!, $admin: Boolean!) {
+		register(username: $name, password: $password, admin: $admin) {
 			success
 			token
 		}
@@ -86,13 +86,13 @@ export function AuthenticationProvider({ children }) {
 	}, [loginRes.data, logoutRes.data]);
 
 	React.useEffect(() => {
-		if (registerMutRes?.data?.login?.success === true) {
-			localStorage.setItem("token", registerMutRes.data.login.token);
+		if (registerMutRes?.data?.register?.success === true) {
+			localStorage.setItem("token", registerMutRes.data.register.token);
 			// enqueueSnackbar("Logged in!", {
 			// 	variant: "success",
 			// });
 			history.push("/");
-		} else if (registerMutRes?.data?.login?.success === false) {
+		} else if (registerMutRes?.data?.register?.success === false) {
 			enqueueSnackbar("An error occurred", {
 				variant: "error",
 			});
@@ -128,6 +128,7 @@ export function AuthenticationProvider({ children }) {
 			variables: {
 				name,
 				password,
+				admin: false,
 			},
 		});
 	};

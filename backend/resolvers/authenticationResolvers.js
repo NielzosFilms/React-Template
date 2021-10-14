@@ -52,13 +52,14 @@ const resolvers = {
 		},
 		register: async (
 			root,
-			{ username, password },
+			{ username, password, admin },
 			{ models, loggedIn }
 		) => {
 			if (loggedIn) return { success: false, token: null };
 			const user = await models.User.create({
 				name: username,
 				password,
+				admin,
 			});
 
 			if (user) {

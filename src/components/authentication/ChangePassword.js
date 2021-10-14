@@ -50,6 +50,7 @@ export function ChangePassword() {
 					className={classes.formElement}
 					type="password"
 					value={passwordConfirm}
+					error={password !== passwordConfirm}
 					onChange={(e) => setPasswordConfirm(e.target.value)}
 					label="Confirm password"
 				/>

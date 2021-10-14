@@ -122,7 +122,7 @@ ${generateModelQueries()}
 
 type Mutation{
     login(username: String!, password: String!): LoginPayload
-	register(username: String!, password: String!): LoginPayload
+	register(username: String!, password: String!, admin: Boolean!): LoginPayload
     logout: Boolean
     changePassword(password: String!): Boolean
 

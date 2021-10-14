@@ -66,6 +66,7 @@ export function Register() {
 					className={classes.formElement}
 					type="password"
 					value={passwordConfirm}
+					error={password !== passwordConfirm}
 					onChange={(e) => setPasswordConfirm(e.target.value)}
 					label="Confirm password"
 				/>
@@ -75,7 +76,7 @@ export function Register() {
 					variant="contained"
 					color="primary"
 				>
-					LOGIN
+					REGISTER
 				</Button>
 			</form>
 		</Paper>
