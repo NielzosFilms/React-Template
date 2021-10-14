@@ -69,9 +69,6 @@ function generateModelTypes() {
 
 function generateModelInputTypes() {
 	console.log("🚧 Generating Input Types...");
-	console.log(
-		"🔴 Only fields work for now, other associations are not implemented yet!"
-	);
 	let graphql = "";
 	Object.keys(models).forEach((modelName) => {
 		let graphqlInput = `input ${modelName}Input {\n`;
