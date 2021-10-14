@@ -10,14 +10,10 @@ const fs = require("fs");
 
 function generateModelTypes() {
 	console.log("🚧 Generating Model Types...");
-	console.log(
-		"🔴 Only fields work for now, other associations are not implemented yet!"
-	);
 	let graphql = "";
 	Object.keys(models).forEach((modelName) => {
 		let graphqlType = `type ${modelName} {\n`;
 		const model = models[modelName];
-		// console.log(model);
 		Object.keys(model.rawAttributes).forEach((propName) => {
 			if (propName === "deletedAt") return;
 			const attribute = model.rawAttributes[propName];
@@ -31,16 +27,16 @@ function generateModelTypes() {
 						attribute.Model.associations[assoModel].options
 							.foreignKey === propName
 				);
-				if (assoModel) {
-					graphqlProp += `${assoModel.toLowerCase()}: ${assoModel.toString()}`;
-				} else {
+				if (!assoModel) {
 					const referenceModel = attribute.references.model;
 					if (pluralize.isPlural(referenceModel)) {
-						graphqlProp += `${referenceModel.toLowerCase()}: [${pluralize.singular(
+						graphqlProp += `${LCFirst(
 							referenceModel
-						)}]`;
+						)}: [${pluralize.singular(referenceModel)}]`;
 					} else {
-						graphqlProp += `${referenceModel.toLowerCase()}: ${referenceModel}`;
+						graphqlProp += `${LCFirst(
+							referenceModel
+						)}: ${referenceModel}`;
 					}
 				}
 			} else {
@@ -51,6 +47,17 @@ function generateModelTypes() {
 			if (attribute.allowNull === false) {
 				// graphqlProp += "!";
 				// console.log("🔶 Skipping the allowNull character '!'");
+			}
+			if (graphqlProp !== "    ") graphqlType += `${graphqlProp}\n`;
+		});
+		Object.keys(model.associations).forEach((key) => {
+			let graphqlProp = `    `;
+			if (pluralize.isPlural(key)) {
+				graphqlProp += `${LCFirst(key)}: [${pluralize.singular(key)}]`;
+			} else {
+				graphqlProp += `${LCFirst(
+					pluralize.singular(key)
+				)}: ${pluralize.singular(key)}`;
 			}
 			graphqlType += `${graphqlProp}\n`;
 		});
@@ -89,16 +96,16 @@ function generateModelInputTypes() {
 						attribute.Model.associations[assoModel].options
 							.foreignKey === propName
 				);
-				if (assoModel) {
-					graphqlProp += `${assoModel.toLowerCase()}: ${assoModel.toString()}Input`;
-				} else {
+				if (!assoModel) {
 					const referenceModel = attribute.references.model;
 					if (pluralize.isPlural(referenceModel)) {
-						graphqlProp += `${referenceModel.toLowerCase()}: [${pluralize.singular(
+						graphqlProp += `${LCFirst(
 							referenceModel
-						)}]`;
+						)}: [${pluralize.singular(referenceModel)}Input]`;
 					} else {
-						graphqlProp += `${referenceModel.toLowerCase()}: ${referenceModel}`;
+						graphqlProp += `${LCFirst(
+							referenceModel
+						)}: ${referenceModel}Input`;
 					}
 				}
 			} else {
@@ -109,6 +116,19 @@ function generateModelInputTypes() {
 			if (attribute.allowNull === false) {
 				// graphqlProp += "!";
 				// console.log("🔶 Skipping the allowNull character '!'");
+			}
+			if (graphqlProp !== "    ") graphqlInput += `${graphqlProp}\n`;
+		});
+		Object.keys(model.associations).forEach((key) => {
+			let graphqlProp = `    `;
+			if (pluralize.isPlural(key)) {
+				graphqlProp += `${LCFirst(key)}: [${pluralize.singular(
+					key
+				)}Input]`;
+			} else {
+				graphqlProp += `${LCFirst(
+					pluralize.singular(key)
+				)}: ${pluralize.singular(key)}Input`;
 			}
 			graphqlInput += `${graphqlProp}\n`;
 		});
