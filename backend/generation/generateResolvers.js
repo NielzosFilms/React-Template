@@ -125,7 +125,6 @@ function generateModelAssociationQueries() {
 			code += `${pluralize.singular(modelName)}: {`;
 
 			Object.keys(assoc).forEach((assocName) => {
-				console.log(modelName, assocName);
 				if (pluralize.isPlural(assocName)) {
 					code += `
 					${LCFirst(assocName)}: async (root, args, extra) => {
