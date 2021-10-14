@@ -17,6 +17,7 @@ function generateModelTypes() {
 	Object.keys(models).forEach((modelName) => {
 		let graphqlType = `type ${modelName} {\n`;
 		const model = models[modelName];
+		// console.log(model);
 		Object.keys(model.rawAttributes).forEach((propName) => {
 			if (propName === "deletedAt") return;
 			const attribute = model.rawAttributes[propName];
@@ -47,7 +48,10 @@ function generateModelTypes() {
 					attribute.type
 				)}`;
 			}
-			// if (attribute.allowNull === false) graphqlProp += "!";
+			if (attribute.allowNull === false) {
+				// graphqlProp += "!";
+				// console.log("🔶 Skipping the allowNull character '!'");
+			}
 			graphqlType += `${graphqlProp}\n`;
 		});
 		graphqlType += `}\n`;
@@ -102,7 +106,10 @@ function generateModelInputTypes() {
 					attribute.type
 				)}`;
 			}
-			// if (attribute.allowNull === false) graphqlProp += "!";
+			if (attribute.allowNull === false) {
+				// graphqlProp += "!";
+				// console.log("🔶 Skipping the allowNull character '!'");
+			}
 			graphqlInput += `${graphqlProp}\n`;
 		});
 		graphqlInput += `}\n`;
