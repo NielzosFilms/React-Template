@@ -9,7 +9,7 @@ const { convertDataTypeToGraphql, LCFirst } = require("./utils");
 const fs = require("fs");
 
 function generateModelTypes() {
-	console.log("🚧 Generating Model Types...");
+	console.log("🚧 Generating model types...");
 	let graphql = "";
 	Object.keys(models).forEach((modelName) => {
 		let graphqlType = `type ${modelName} {\n`;
@@ -68,7 +68,7 @@ function generateModelTypes() {
 }
 
 function generateModelInputTypes() {
-	console.log("🚧 Generating Input Types...");
+	console.log("🚧 Generating input yypes...");
 	let graphql = "";
 	Object.keys(models).forEach((modelName) => {
 		let graphqlInput = `input ${modelName}Input {\n`;
@@ -136,7 +136,7 @@ function generateModelInputTypes() {
 }
 
 function generateModelQueries() {
-	console.log("🚧 Generating Model Queries...");
+	console.log("🚧 Generating model queries...");
 	let graphql = "";
 	Object.keys(models).forEach((modelName) => {
 		graphql += `    ${LCFirst(modelName)}FindOne(id: Int): ${modelName}\n`;
@@ -146,7 +146,7 @@ function generateModelQueries() {
 }
 
 function generateModelMutations() {
-	console.log("🚧 Generating Model Mutations...");
+	console.log("🚧 Generating model mutations...");
 	let graphql = "";
 	Object.keys(models).forEach((modelName) => {
 		graphql += `    ${LCFirst(
