@@ -12,11 +12,15 @@ function generateModelQueries() {
 	console.log("🚧 Generating model query resolvers...");
 	let code = "";
 	Object.keys(models).forEach((modelName) => {
+		if (modelName === "Session") return;
 		if (modelName === "User") {
 			code += `${LCFirst(
 				modelName
-			)}FindOne: async (root, { id }, { loggedIn, models, admin }) => {
-				if (!loggedIn || !admin) return null;
+			)}FindOne: async (root, { id }, { loggedIn, models, admin, user }) => {
+				if (!loggedIn) return null;
+				if(user.id !== id) {
+					if(!admin) return null;
+				}
 				return await models.${modelName}.findOne({
 					where: {
 						id,
@@ -120,12 +124,13 @@ function generateModelAssociationQueries() {
 	console.log("🚧 Generating model query association resolvers...");
 	let code = "";
 	Object.keys(models).forEach((modelName) => {
+		if (modelName === "Session") return;
 		const assoc = models[modelName].associations;
 		if (Object.keys(assoc).length > 0) {
 			code += `${pluralize.singular(modelName)}: {`;
 
 			Object.keys(assoc).forEach((assocName) => {
-				console.log(modelName, assocName);
+				if (pluralize.singular(assocName) === "Session") return;
 				if (pluralize.isPlural(assocName)) {
 					code += `
 					${LCFirst(assocName)}: async (root, args, extra) => {
