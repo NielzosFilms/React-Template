@@ -15,8 +15,11 @@ function generateModelQueries() {
 		if (modelName === "User") {
 			code += `${LCFirst(
 				modelName
-			)}FindOne: async (root, { id }, { loggedIn, models, admin }) => {
-				if (!loggedIn || !admin) return null;
+			)}FindOne: async (root, { id }, { loggedIn, models, admin, user }) => {
+				if (!loggedIn) return null;
+				if(user.id !== record.id) {
+					if(!admin) return null;
+				}
 				return await models.${modelName}.findOne({
 					where: {
 						id,
@@ -26,8 +29,11 @@ function generateModelQueries() {
 			`;
 			code += `${LCFirst(
 				modelName
-			)}FindAll: async (root, args, { loggedIn, models, admin }) => {
-				if (!loggedIn || !admin) return null;
+			)}FindAll: async (root, args, { loggedIn, models, admin, user }) => {
+				if (!loggedIn) return null;
+				if(user.id !== record.id) {
+					if(!admin) return null;
+				}
 				return await models.${modelName}.findAll();
 			},
 			`;
@@ -61,23 +67,42 @@ function generateModelMutations() {
 	Object.keys(models).forEach((modelName) => {
 		if (modelName === "User") {
 			code += `
-			${LCFirst(
-				modelName
-			)}FindOne: async (root, { id }, { loggedIn, models, admin }) => {
-				if (!loggedIn || !admin) return null;
-				return await models.${modelName}.findOne({
-					where: {
-						id,
-					},
+			${LCFirst(modelName)}Create: async (root, { record }, { loggedIn, models }) => {
+				return await models.${modelName}.Create({
+					...record,
 				});
 			},
 			`;
 			code += `
 			${LCFirst(
 				modelName
-			)}FindAll: async (root, args, { loggedIn, models, admin }) => {
-				if (!loggedIn || !admin) return null;
-				return await models.${modelName}.findAll();
+			)}Update: async (root, { record }, { loggedIn, models, admin, user }) => {
+				if (!loggedIn) return null;
+				if(user.id !== record.id) {
+					if(!admin) return null;
+				}
+				return await models.${modelName}.Update({
+					...record,
+				}, {
+					where: {
+						id: record.id
+					}
+				});
+			},
+			`;
+			code += `
+			${LCFirst(
+				modelName
+			)}Delete: async (root, { record }, { loggedIn, models, admin, user }) => {
+				if (!loggedIn) return null;
+				if(user.id !== record.id) {
+					if(!admin) return null;
+				}
+				return await models.${modelName}.Destroy({
+					where: {
+						id: record.id
+					},
+				});
 			},
 			`;
 		} else {
